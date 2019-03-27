@@ -1,6 +1,7 @@
 package DDCombat;
 
 import java.awt.Color;
+
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
@@ -21,6 +22,7 @@ import javax.swing.JFrame;
 import pathfinding.AStarPathFinder;
 import pathfinding.Path;
 import pathfinding.PathFinder;
+import creature.*;
 
 
 /**
@@ -30,15 +32,19 @@ import pathfinding.PathFinder;
  * @author Kevin Glass
  */
 public class testRender extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/** The map on which the units will move */
-	private gridMap map = new gridMap();
+	private static gridMap map = new gridMap();
 	/** The path finder we'll use to search our map */
 	private PathFinder finder;
 	/** The last path found for the current unit */
 	private Path path;
 	
 	/** The list of tile images to render the map */
-	private Image[] tiles = new Image[6];
+	private Image[] tiles = new Image[8];
 	/** The offscreen buffer used for rendering in the wonder world of Java 2D */
 	private Image buffer;
 	
@@ -56,21 +62,24 @@ public class testRender extends JFrame {
 	 * Create a new test game for the path finding tutorial
 	 */
 	public testRender() {
-		super("Path Finding Example");
-	
+		super("D&D Combat Program - Map: " + map.getName());
+		//CreatureInfo window = new CreatureInfo();
+		//window.frame.setVisible(true);
 		try {
-			tiles[gridMap.TREES] = ImageIO.read(getResource("res/trees.png"));
 			tiles[gridMap.GRASS] = ImageIO.read(getResource("res/grass.png"));
+			tiles[gridMap.TREES] = ImageIO.read(getResource("res/trees.png"));
 			tiles[gridMap.WATER] = ImageIO.read(getResource("res/water.png"));
 			tiles[gridMap.TANK] = ImageIO.read(getResource("res/tank.png"));
 			tiles[gridMap.PLANE] = ImageIO.read(getResource("res/plane.png"));
 			tiles[gridMap.BOAT] = ImageIO.read(getResource("res/boat.png"));
+			tiles[gridMap.PLAYER] = ImageIO.read(getResource("res/player.png"));
+			tiles[gridMap.GOBLIN] = ImageIO.read(getResource("res/goblin.png"));
 		} catch (IOException e) {
 			System.err.println("Failed to load resources: "+e.getMessage());
 			System.exit(0);
 		}
 		
-		finder = new AStarPathFinder(map, 500, true);
+		finder = new AStarPathFinder(map, 6, true);
 		
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -91,7 +100,7 @@ public class testRender extends JFrame {
 			}
 		});
 		
-		setSize(1200,1200);
+		setSize(15*64,(16*64)-32);
 		setResizable(false);
 		setVisible(true);
 	}
@@ -120,10 +129,10 @@ public class testRender extends JFrame {
 	 * @param y The y coordinate of the mouse cursor on the screen
 	 */
 	private void handleMouseMoved(int x, int y) {
-		x -= 50;
-		y -= 50;
-		x /= 16;
-		y /= 16;
+		x -= 0;
+		y -= 32;
+		x /= 64;
+		y /= 64;
 		
 		if ((x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles())) {
 			return;
@@ -133,7 +142,7 @@ public class testRender extends JFrame {
 			if ((lastFindX != x) || (lastFindY != y)) {
 				lastFindX = x;
 				lastFindY = y;
-				path = finder.findPath(new UnitMover(map.getUnit(selectedx, selectedy)), 
+				path = finder.findPath(new creature(map.getUnit(selectedx, selectedy)), 
 									   selectedx, selectedy, x, y);
 				repaint(0);
 			}
@@ -147,10 +156,10 @@ public class testRender extends JFrame {
 	 * @param y The y coordinate of the mouse cursor on the screen
 	 */
 	private void handleMousePressed(int x, int y) {
-		x -= 50;
-		y -= 50;
-		x /= 16;
-		y /= 16;
+		x -= 0;
+		y -= 32;
+		x /= 64;
+		y /= 64;
 		
 		if ((x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles())) {
 			return;
@@ -163,10 +172,11 @@ public class testRender extends JFrame {
 		} else {
 			if (selectedx != -1) {
 				map.clearVisited();
-				path = finder.findPath(new UnitMover(map.getUnit(selectedx, selectedy)), 
+				path = finder.findPath(new creature(map.getUnit(selectedx, selectedy)), 
 						   			   selectedx, selectedy, x, y);
 				
 				if (path != null) {
+					System.out.println("Total Path Cost: " + (path.getLength()-1)*5 + " Feet of Movement");
 					path = null;
 					int unit = map.getUnit(selectedx, selectedy);
 					map.setUnit(selectedx, selectedy, 0);
@@ -175,9 +185,12 @@ public class testRender extends JFrame {
 					selectedy = y;
 					lastFindX = - 1;
 				}
+				else
+				{
+					System.out.println("Can't reach " + x + "," + y);
+				}
 			}
 		}
-		
 		repaint(0);
 	}
 	
@@ -188,12 +201,13 @@ public class testRender extends JFrame {
 		// create an offscreen buffer to render the map
 
 		if (buffer == null) {
-			buffer = new BufferedImage(1200, 1200, BufferedImage.TYPE_INT_ARGB);			
+			buffer = new BufferedImage(1200, 1200, BufferedImage.TYPE_INT_RGB);			
 		}
 		Graphics g = buffer.getGraphics();
 		
 		g.clearRect(0,0,1200,1200);
-		g.translate(50, 50);
+		//g.translate(50, 50);
+		g.translate(0, 32);
 		
 		// cycle through the tiles in the map drawing the appropriate
 
@@ -201,14 +215,16 @@ public class testRender extends JFrame {
 
 		for (int x=0;x<map.getWidthInTiles();x++) {
 			for (int y=0;y<map.getHeightInTiles();y++) {
-				g.drawImage(tiles[map.getTerrain(x, y)],x*16,y*16,null);
+				g.drawImage(tiles[map.getTerrain(x, y)],x*64+2,y*64,null);
+				g.setColor(Color.black);
+				g.drawRect(x*64, y*64, 64, 64);
 				if (map.getUnit(x, y) != 0) {
-					g.drawImage(tiles[map.getUnit(x, y)],x*16,y*16,null);
+					g.drawImage(tiles[map.getUnit(x, y)],x*64,y*64,null);
 				} else {
 					if (path != null) {
 						if (path.contains(x, y)) {
-							g.setColor(Color.blue);
-							g.fillRect((x*16)+4, (y*16)+4,7,7);
+							g.setColor(Color.black);
+							g.fillRect((x*64)+27, (y*64)+27,10,10);
 						}
 					}	
 				}
@@ -219,10 +235,10 @@ public class testRender extends JFrame {
 
 		if (selectedx != -1) {
 			g.setColor(Color.black);
-			g.drawRect(selectedx*16, selectedy*16, 15, 15);
-			g.drawRect((selectedx*16)-2, (selectedy*16)-2, 19, 19);
+			g.drawRect(selectedx*64, selectedy*64, 63, 63);
+			g.drawRect((selectedx*64)-2, (selectedy*64)-2, 67, 67);
 			g.setColor(Color.white);
-			g.drawRect((selectedx*16)-1, (selectedy*16)-1, 17, 17);
+			g.drawRect((selectedx*64)-1, (selectedy*64)-1, 65, 65);
 		}
 		
 		// finally draw the buffer to the real graphics context in one
@@ -238,6 +254,7 @@ public class testRender extends JFrame {
 	 * @param argv The arguments passed into the game
 	 */
 	public static void main(String[] argv) {
-		testRender test = new testRender();		
+		testRender test = new testRender();
+		
 	}
 }

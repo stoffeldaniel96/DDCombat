@@ -9,7 +9,6 @@ public class ClosestHeuristic implements AStarHeuristic {
 		float dy = ty - y;
 		
 		float result = (float) (Math.sqrt((dx*dx)+(dy*dy)));
-		
 		return result;
 	}
 

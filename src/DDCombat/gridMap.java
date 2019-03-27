@@ -2,12 +2,13 @@ package DDCombat;
 
 import pathfinding.Mover;
 import pathfinding.TileBasedMap;
+import creature.*;
 
 public class gridMap implements TileBasedMap {
 	/** The map width in tiles */
-	public static final int WIDTH = 600;
+	public static final int WIDTH = 15;
 	/** The map height in tiles */
-	public static final int HEIGHT = 600;
+	public static final int HEIGHT = 15;
 	
 	/** Indicate grass terrain at a given location */
 	public static final int GRASS = 0;
@@ -22,6 +23,9 @@ public class gridMap implements TileBasedMap {
 	/** Indicate a tank is at a given location */
 	public static final int TANK = 5;
 	
+	public static final int PLAYER = 6;
+	
+	public static final int GOBLIN = 7;
 	/** The terrain settings for each tile in the map */
 	private int[][] terrain = new int[WIDTH][HEIGHT];
 	/** The unit in each tile of the map */
@@ -29,30 +33,43 @@ public class gridMap implements TileBasedMap {
 	/** Indicator if a given tile has been visited during the search */
 	private boolean[][] visited = new boolean[WIDTH][HEIGHT];
 	
+	private String name = "Test Field";
+	
 	/**
 	 * Create a new test map with some default configuration
 	 */
 	public gridMap() {
 		// create some test data
 
-		fillArea(0,0,5,5,WATER);
-		fillArea(0,5,3,10,WATER);
-		fillArea(0,5,3,10,WATER);
-		fillArea(0,15,7,15,WATER);
-		fillArea(7,26,22,4,WATER);
+		//fillArea(10,5,3,3,TREES);
+		fillArea(0,2,1,1,TREES);
+		fillArea(5,3,1,1,TREES);
+		fillArea(10,8,1,1,TREES);
+		fillArea(1,2,1,1,TREES);
+		fillArea(8,9,1,1,TREES);
+		fillArea(5,4,1,1,TREES);
+		fillArea(3,6,1,1,TREES);
+		fillArea(7,7,1,1,TREES);
+		fillArea(1,4,1,1,TREES);
+		fillArea(1,6,1,1,TREES);
+		fillArea(3,7,1,1,TREES);
+		fillArea(1,13,1,1,TREES);
+		fillArea(1,11,1,1,TREES);
+		fillArea(3,12,1,1,TREES);
+		fillArea(13,1,1,1,TREES);
+		fillArea(11,1,1,1,TREES);
+		fillArea(12,3,1,1,TREES);
 		
-		fillArea(17,5,10,3,TREES);
-		fillArea(20,8,5,3,TREES);
-		
-		fillArea(8,2,7,3,TREES);
-		fillArea(10,5,3,3,TREES);
-		fillArea(30,2,3,18,TREES);
-		fillArea(50,5,3,3,TREES);
-		
+		units[1][1] = PLAYER;
+		units[13][13] = GOBLIN;
+		units[12][13] = GOBLIN;
+		units[13][12] = GOBLIN;
+		/*
 		units[15][15] = TANK;
 		units[16][16] = TANK;
 		units[2][7] = BOAT;
 		units[20][25] = PLANE;
+		*/
 	}
 
 	/**
@@ -73,7 +90,7 @@ public class gridMap implements TileBasedMap {
 	}
 	
 	/**
-	 * Clear the array marking which tiles have been visted by the path 
+	 * Clear the array marking which tiles have been visited by the path 
 	 * finder.
 	 */
 	public void clearVisited() {
@@ -91,6 +108,9 @@ public class gridMap implements TileBasedMap {
 		return visited[x][y];
 	}
 	
+	public String getName() {
+		return name;
+	}
 	/**
 	 * Get the terrain at a given location
 	 * 
@@ -135,7 +155,7 @@ public class gridMap implements TileBasedMap {
 			return true;
 		}
 		
-		int unit = ((UnitMover) mover).getType();
+		int unit = ((creature) mover).getType();
 		
 		// planes can move anywhere
 
@@ -144,7 +164,7 @@ public class gridMap implements TileBasedMap {
 		}
 		// tanks can only move across grass
 
-		if (unit == TANK) {
+		if (unit == TANK || unit == PLAYER || unit == GOBLIN) {
 			return terrain[x][y] != GRASS;
 		}
 		// boats can only move across water
@@ -162,7 +182,7 @@ public class gridMap implements TileBasedMap {
 	 * @see TileBasedMap#getCost(Mover, int, int, int, int)
 	 */
 	public float getCost(Mover mover, int sx, int sy, int tx, int ty) {
-		return 1;
+		return 5;
 	}
 
 	/**
