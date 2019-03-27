@@ -1,0 +1,1 @@
+This is a pathfinding package salvaged from "Coke and Code" via their now unavailable Slink library. This uses a public usage license on this library but we will most likely end up replacing everything anyway. 
