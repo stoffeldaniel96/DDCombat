@@ -20,8 +20,8 @@ public class AIcontroller {
 														//2 - scared
 														//3 - panic
 	
-	//this value is true if a guard AI spots a character
-	private boolean spotted;
+	
+	private boolean spotted;					//this value is true if a guard AI spots a character
 	private boolean guardWander;
 	private int maxHP;
 	
@@ -109,6 +109,43 @@ public class AIcontroller {
 				state = 1;
 			}
 		
+		}
+	}
+	
+	//Name: turnActions
+	//inputs: creature host - the creature doing the action
+	public void turnActions(creature host)
+	{
+		switch(state) {
+		
+		//guard
+		case 0:
+			//move action
+			if(guardWander) 
+			{
+				guardPath;	//not yet coded
+			}
+			else
+				wander;		//not yet coded
+		
+			//spot check
+			spotted = spotCheck;
+		
+			//update character's state
+			updateState(host.getHitPoints(), false, false);
+
+		//alert
+		case 1:
+			//engage
+			/*pick a random enemy*/
+			
+			
+			
+		//scared
+		case 2:
+		
+		//panic
+		case 3:
 		}
 	}
 }
