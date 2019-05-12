@@ -52,6 +52,7 @@ public class mainWindow {
 		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
+		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel MAIN_WINDOW = new JPanel();
@@ -67,6 +68,7 @@ public class mainWindow {
 		btnMapEditor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cards.show(MAIN_WINDOW, "name_6906489067600");
+				frame.setBounds(100, 100, 800, 800);
 			}
 		});
 		btnMapEditor.setBounds(10, 82, 123, 23);
@@ -101,19 +103,20 @@ public class mainWindow {
 		MAIN_WINDOW.add(editorWindow, "name_6906489067600");
 		editorWindow.setLayout(null);
 		
-		JButton btnGoBack = new JButton("Main Menu");
+		JButton btnGoBack = new JButton("Back to Main Menu");
 		btnGoBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cards.show(MAIN_WINDOW, "name_6893870138000");
+				frame.setBounds(100, 100, 450, 300);
 			}
 		});
-		btnGoBack.setBounds(10, 227, 99, 23);
+		btnGoBack.setBounds(10, 740, 150, 20);
 		editorWindow.add(btnGoBack);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBounds(10, 11, 414, 211);
+		scrollPane.setBounds(10, 11, 770, 720);
 		editorWindow.add(scrollPane);
 	}
 }
