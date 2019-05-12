@@ -25,13 +25,7 @@ import pathfinding.PathFinder;
 import creature.*;
 
 
-/**
- * A simple test to show some path finding at unit
- * movement for a tutorial at http://www.cokeandcode.com
- * 
- * @author Kevin Glass
- */
-public class testRender extends JFrame {
+public class testCombat extends JFrame {
 	/**
 	 * 
 	 */
@@ -61,7 +55,7 @@ public class testRender extends JFrame {
 	/**
 	 * Create a new test game for the path finding tutorial
 	 */
-	public testRender() {
+	public testCombat() {
 		super("D&D Combat Program - Map: " + map.getName());
 		//CreatureInfo window = new CreatureInfo();
 		//window.frame.setVisible(true);
@@ -69,9 +63,6 @@ public class testRender extends JFrame {
 			tiles[gridMap.GRASS] = ImageIO.read(getResource("res/grass.png"));
 			tiles[gridMap.TREES] = ImageIO.read(getResource("res/trees.png"));
 			tiles[gridMap.WATER] = ImageIO.read(getResource("res/water.png"));
-			tiles[gridMap.TANK] = ImageIO.read(getResource("res/tank.png"));
-			tiles[gridMap.PLANE] = ImageIO.read(getResource("res/plane.png"));
-			tiles[gridMap.BOAT] = ImageIO.read(getResource("res/boat.png"));
 			tiles[gridMap.PLAYER] = ImageIO.read(getResource("res/player.png"));
 			tiles[gridMap.GOBLIN] = ImageIO.read(getResource("res/goblin.png"));
 		} catch (IOException e) {
@@ -254,7 +245,7 @@ public class testRender extends JFrame {
 	 * @param argv The arguments passed into the game
 	 */
 	public static void main(String[] argv) {
-		testRender test = new testRender();
+		testCombat test = new testCombat();
 		
 	}
 }
