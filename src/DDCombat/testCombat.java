@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -18,6 +19,7 @@ import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import pathfinding.AStarPathFinder;
 import pathfinding.Path;
@@ -25,7 +27,7 @@ import pathfinding.PathFinder;
 import creature.*;
 
 
-public class testCombat extends JFrame {
+public class testCombat extends JPanel {
 	/**
 	 * 
 	 */
@@ -52,11 +54,12 @@ public class testCombat extends JFrame {
 	/** The y coordinate of the target of the last path we searched for - used to cache and prevent constantly re-searching */
 	private int lastFindY = -1;
 	
-	/**
+	
+    /**
 	 * Create a new test game for the path finding tutorial
 	 */
 	public testCombat() {
-		super("D&D Combat Program - Map: " + map.getName());
+		//super("D&D Combat Program - Map: " + map.getName());
 		//CreatureInfo window = new CreatureInfo();
 		//window.frame.setVisible(true);
 		try {
@@ -85,14 +88,15 @@ public class testCombat extends JFrame {
 				handleMouseMoved(e.getX(), e.getY());
 			}
 		});
+		/*
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}
 		});
-		
+		*/
 		setSize(15*64,(16*64)-32);
-		setResizable(false);
+		//setResizable(false);
 		setVisible(true);
 	}
 	
@@ -111,7 +115,7 @@ public class testCombat extends JFrame {
 		
 		return new FileInputStream(ref);
 	}
-
+	
 	/**
 	 * Handle the mouse being moved. In this case we want to find a path from the
 	 * selected unit to the position the mouse is at
@@ -121,7 +125,7 @@ public class testCombat extends JFrame {
 	 */
 	private void handleMouseMoved(int x, int y) {
 		x -= 0;
-		y -= 32;
+		y -= 0;
 		x /= 64;
 		y /= 64;
 		
@@ -148,7 +152,7 @@ public class testCombat extends JFrame {
 	 */
 	private void handleMousePressed(int x, int y) {
 		x -= 0;
-		y -= 32;
+		y -= 0;
 		x /= 64;
 		y /= 64;
 		
@@ -198,7 +202,7 @@ public class testCombat extends JFrame {
 		
 		g.clearRect(0,0,1200,1200);
 		//g.translate(50, 50);
-		g.translate(0, 32);
+		g.translate(0, 0);
 		
 		// cycle through the tiles in the map drawing the appropriate
 
@@ -244,8 +248,10 @@ public class testCombat extends JFrame {
 	 * 
 	 * @param argv The arguments passed into the game
 	 */
+	/*
 	public static void main(String[] argv) {
 		testCombat test = new testCombat();
 		
 	}
+	*/
 }

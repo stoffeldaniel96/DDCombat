@@ -81,10 +81,10 @@ public class gridMap implements TileBasedMap {
 	 * @param height The height of the area to fill
 	 * @param type The terrain type to fill with
 	 */
-	private void fillArea(int x, int y, int width, int height, int type) {
+	public void fillArea(int x, int y, int width, int height, int type) {
 		for (int xp=x;xp<x+width;xp++) {
 			for (int yp=y;yp<y+height;yp++) {
-				terrain[xp][yp] = type;
+				getTerrain()[xp][yp] = type;
 			}
 		}
 	}
@@ -165,12 +165,12 @@ public class gridMap implements TileBasedMap {
 		// tanks can only move across grass
 
 		if (unit == TANK || unit == PLAYER || unit == GOBLIN) {
-			return terrain[x][y] != GRASS;
+			return getTerrain()[x][y] != GRASS;
 		}
 		// boats can only move across water
 
 		if (unit == BOAT) {
-			return terrain[x][y] != WATER;
+			return getTerrain()[x][y] != WATER;
 		}
 		
 		// unknown unit so everything blocks
@@ -204,6 +204,14 @@ public class gridMap implements TileBasedMap {
 	 */
 	public void pathFinderVisited(int x, int y) {
 		visited[x][y] = true;
+	}
+
+	public int[][] getTerrain() {
+		return terrain;
+	}
+
+	public void setTerrain(int[][] terrain) {
+		this.terrain = terrain;
 	}
 	
 	
