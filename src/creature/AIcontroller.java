@@ -114,7 +114,8 @@ public class AIcontroller {
 	
 	//Name: turnActions
 	//inputs: creature host - the creature doing the action
-	public void turnActions(creature host)
+	/*
+	public void turnActions( host)
 	{
 		switch(state) {
 		
@@ -123,13 +124,13 @@ public class AIcontroller {
 			//move action
 			if(guardWander) 
 			{
-				guardPath;	//not yet coded
+				//guardPath;	//not yet coded
 			}
 			else
-				wander;		//not yet coded
+				//wander;		//not yet coded
 		
 			//spot check
-			spotted = spotCheck;
+			//spotted = spotCheck;
 		
 			//update character's state
 			updateState(host.getHitPoints(), false, false);
@@ -137,7 +138,7 @@ public class AIcontroller {
 		//alert
 		case 1:
 			//engage
-			/*pick a random enemy*/
+			//pick a random enemy
 			
 			
 			
@@ -148,4 +149,5 @@ public class AIcontroller {
 		case 3:
 		}
 	}
+	*/
 }
