@@ -1,6 +1,8 @@
 package creature;
 
 import java.util.*;
+
+import DDCombat.CreatureInfo;
 /*
  * Name: AIcontroller.java
  * Description:
@@ -114,7 +116,7 @@ public class AIcontroller {
 	
 	//Name: turnActions
 	//inputs: creature host - the creature doing the action
-	public void turnActions(creature host)
+	public void turnActions(creature host, creature target, CreatureInfo hostInfo, CreatureInfo targetInfo)
 	{
 		switch(state) {
 		
@@ -123,13 +125,13 @@ public class AIcontroller {
 			//move action
 			if(guardWander) 
 			{
-				guardPath;	//not yet coded
+				//guardPath;	//not yet coded
 			}
 			else
-				wander;		//not yet coded
+				//wander;		//not yet coded
 		
 			//spot check
-			spotted = spotCheck;
+			//spotted = spotCheck();
 		
 			//update character's state
 			updateState(host.getHitPoints(), false, false);
@@ -138,14 +140,90 @@ public class AIcontroller {
 		case 1:
 			//engage
 			/*pick a random enemy*/
+			//if not near enemy, charge
+			if(!characterNear(hostInfo, targetInfo))
+			{
+				charge();
+			}
+			else
+			{
+				strike();
+			}
 			
-			
+			//if character hp is below a certain threshold maybe heal
 			
 		//scared
 		case 2:
-		
+			flee();
+			//possibly heal
 		//panic
 		case 3:
+			rout();
+			//possibly heal
 		}
+	}
+	
+	
+	//strike
+	//attacks target character
+	public void strike()
+	{
+		//roll attack roll
+		//check target AC
+		//if hits, calculate and deal damage
+		//else, do nothing
+	}
+	
+	//charge
+	//chases a target creature
+	public void charge()
+	{
+		//try to move next to target
+		//if not possible, try to move as close as possible
+	}
+	
+	public void flee()
+	{
+		//get distance from target
+	}
+	
+	public void rout()
+	{
+		//get off the map
+	}
+	
+	//characterNear
+	//returns true if target character is within striking distance of host character
+	public boolean characterNear(CreatureInfo host, CreatureInfo target)
+	{
+		//if host is here
+		//X-possible position T-target's position O-nothing
+		//
+		//XOO
+		//XTO
+		//XOO
+		if(host.getLocx() == target.getLocx()-1 && (host.getLocy() == target.getLocy()-1 || host.getLocy() == target.getLocy() ||host.getLocy() == target.getLocy()+1))
+		{
+			return true;
+		}
+		//host is in this position
+		//OXO
+		//OTO
+		//OXO
+		else if(host.getLocx() == target.getLocx() &&(host.getLocy() == target.getLocy()-1 || host.getLocy() == target.getLocy()+1))
+		{
+			return true;
+		}
+		//host is in this position
+		//OOX
+		//OTX
+		//OOX
+		else if(host.getLocx() == target.getLocx()+1 && (host.getLocy() == target.getLocy()-1 || host.getLocy() == target.getLocy() ||host.getLocy() == target.getLocy()+1))
+		{
+			return true;
+		}
+		
+		//in this case, host character is not in striking position of target character
+		return false;
 	}
 }
