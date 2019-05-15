@@ -26,12 +26,6 @@ public class gridMap implements TileBasedMap {
 	public static final int WATER = 1;
 	/** Indicate trees terrain at a given location */
 	public static final int TREES = 2;
-	/** Indicate a plane is at a given location */
-	public static final int PLANE = 3;
-	/** Indicate a boat is at a given location */
-	public static final int BOAT = 4;
-	/** Indicate a tank is at a given location */
-	public static final int TANK = 5;
 	
 	public static final int PLAYER = 6;
 	
@@ -49,63 +43,11 @@ public class gridMap implements TileBasedMap {
 	 * Create a new test map with some default configuration
 	 */
 	public gridMap() {
-		// create some test data
-
-		/*
-		fillArea(0,2,1,1,TREES);
-		fillArea(5,3,1,1,TREES);
-		fillArea(10,8,1,1,TREES);
-		fillArea(1,2,1,1,TREES);
-		fillArea(8,9,1,1,TREES);
-		fillArea(5,4,1,1,TREES);
-		fillArea(3,6,1,1,TREES);
-		fillArea(7,7,1,1,TREES);
-		fillArea(1,4,1,1,TREES);
-		fillArea(1,6,1,1,TREES);
-		fillArea(3,7,1,1,TREES);
-		fillArea(1,13,1,1,TREES);
-		fillArea(1,11,1,1,TREES);
-		fillArea(3,12,1,1,TREES);
-		fillArea(13,1,1,1,TREES);
-		fillArea(11,1,1,1,TREES);
-		fillArea(12,3,1,1,TREES);
-		
-		units[1][1] = PLAYER;
-		units[13][13] = GOBLIN;
-		units[12][13] = GOBLIN;
-		units[13][12] = GOBLIN;
-		*/
+	
 	}
 	
 	public gridMap(String filePath) {
-		// create some test data
 		loadMap(filePath);
-		
-		
-	    /*
-		fillArea(0,2,1,1,TREES);
-		fillArea(5,3,1,1,TREES);
-		fillArea(10,8,1,1,TREES);
-		fillArea(1,2,1,1,TREES);
-		fillArea(8,9,1,1,TREES);
-		fillArea(5,4,1,1,TREES);
-		fillArea(3,6,1,1,TREES);
-		fillArea(7,7,1,1,TREES);
-		fillArea(1,4,1,1,TREES);
-		fillArea(1,6,1,1,TREES);
-		fillArea(3,7,1,1,TREES);
-		fillArea(1,13,1,1,TREES);
-		fillArea(1,11,1,1,TREES);
-		fillArea(3,12,1,1,TREES);
-		fillArea(13,1,1,1,TREES);
-		fillArea(11,1,1,1,TREES);
-		fillArea(12,3,1,1,TREES);
-		
-		units[1][1] = PLAYER;
-		units[13][13] = GOBLIN;
-		units[12][13] = GOBLIN;
-		units[13][12] = GOBLIN;
-		*/
 	}
 	/**
 	 * Fill an area with a given terrain type
@@ -165,7 +107,7 @@ public class gridMap implements TileBasedMap {
 	 * @return The ID of the unit at the given location or 0 if there is no unit 
 	 */
 	public int getUnit(int x, int y) {
-		return units[x][y];
+		return getUnits()[x][y];
 	}
 	
 	/**
@@ -177,7 +119,7 @@ public class gridMap implements TileBasedMap {
 	 * given location
 	 */
 	public void setUnit(int x, int y, int unit) {
-		units[x][y] = unit;
+		getUnits()[x][y] = unit;
 	}
 	
 	/**
@@ -192,24 +134,14 @@ public class gridMap implements TileBasedMap {
 		
 		int unit = ((creature) mover).getType();
 		
-		// planes can move anywhere
-
-		if (unit == PLANE) {
-			return false;
-		}
-		// tanks can only move across grass
-
-		if (unit == TANK || unit == PLAYER || unit == GOBLIN) {
-			return getTerrain()[x][y] != GRASS;
-		}
-		// boats can only move across water
-
-		if (unit == BOAT) {
-			return getTerrain()[x][y] != WATER;
+		if (unit == PLAYER) {
+			return terrain[x][y] != GRASS;
 		}
 		
-		// unknown unit so everything blocks
-
+		if (unit == GOBLIN) {
+			return terrain[x][y] != GRASS;
+		}
+		
 		return true;
 	}
 
@@ -264,6 +196,14 @@ public class gridMap implements TileBasedMap {
 			//e.printStackTrace();
 			System.out.println("No can do");
 		}
+	}
+
+	public int[][] getUnits() {
+		return units;
+	}
+
+	public void setUnits(int[][] units) {
+		this.units = units;
 	}
 	
 	

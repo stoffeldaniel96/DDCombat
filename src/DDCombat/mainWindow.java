@@ -94,7 +94,7 @@ public class mainWindow {
 		btnTestEncounter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cards.show(MAIN_WINDOW, "name_1251653242400");
-				frame.setBounds(0, 0, 1000, 800);
+				frame.setBounds(0, 0, 1100, 800);
 				frame.setLocationRelativeTo(null);
 				
 			}
@@ -121,7 +121,7 @@ public class mainWindow {
 		scrollPaneMW.setBounds(10, 11, 770, 720);
 		quickCombat.add(scrollPaneMW);
 		
-		testCombat testC = new testCombat();
+		combatWindow testC = new combatWindow();
 		testC.setPreferredSize(new Dimension(960,960));
 		scrollPaneMW.setViewportView(testC);
 		JButton btnQEGoBack = new JButton("Back to Main Menu");
@@ -133,7 +133,8 @@ public class mainWindow {
 				frame.setSize(450,300);
 			}
 		});
-		CreatureInfo aCreature = new CreatureInfo();
+		creatureWindow aCreature = new creatureWindow();
+		aCreature.setBounds(780, 10, 300, 800);
 		quickCombat.add(aCreature);
 		
 		JPanel editorWindow = new JPanel();

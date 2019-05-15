@@ -28,7 +28,7 @@ import pathfinding.PathFinder;
 import creature.*;
 
 
-public class testCombat extends JPanel {
+public class combatWindow extends JPanel {
 	/**
 	 * 
 	 */
@@ -47,6 +47,8 @@ public class testCombat extends JPanel {
 	/** The offscreen buffer used for rendering in the wonder world of Java 2D */
 	private Image buffer;
 	
+	private int[][] bufferUnits = new int[WIDTH][HEIGHT];
+	
 	/** The x coordinate of selected unit or -1 if none is selected */
 	private int selectedx = -1;
 	/** The y coordinate of selected unit or -1 if none is selected */
@@ -61,7 +63,7 @@ public class testCombat extends JPanel {
     /**
 	 * Create a new test game for the path finding tutorial
 	 */
-	public testCombat() {
+	public combatWindow() {
 		try {
 			tiles[gridMap.GRASS] = ImageIO.read(getResource("res/grass.png"));
 			tiles[gridMap.TREES] = ImageIO.read(getResource("res/trees.png"));
@@ -77,7 +79,14 @@ public class testCombat extends JPanel {
 		
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				handleMousePressed(e.getX(), e.getY());
+				if (e.getButton() == 1)
+					handleMousePressed(e.getX(), e.getY());
+				else if (e.getButton() == 2) 
+					map.setUnit(e.getX()/64, e.getY()/64, gridMap.PLAYER);
+				else if(e.getButton() == 3) 
+					map.setUnit(e.getX()/64, e.getY()/64, gridMap.GOBLIN);
+				
+				repaint();
 			}
 		});
 		addMouseMotionListener(new MouseMotionListener() {
@@ -88,14 +97,8 @@ public class testCombat extends JPanel {
 				handleMouseMoved(e.getX(), e.getY());
 			}
 		});
-		/*
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
-		*/
-		setSize(15*64,(16*64)-32);
+		
+		setSize(15*64,(15*64));
 		//setResizable(false);
 		setVisible(true);
 	}
@@ -159,6 +162,7 @@ public class testCombat extends JPanel {
 		if ((x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles())) {
 			return;
 		}
+		
 		
 		if (map.getUnit(x, y) != 0) {
 			selectedx = x;
@@ -243,15 +247,4 @@ public class testCombat extends JPanel {
 		graphics.drawImage(buffer, 0, 0, null);
 	}
 	
-	/**
-	 * Entry point to our simple test game
-	 * 
-	 * @param argv The arguments passed into the game
-	 */
-	/*
-	public static void main(String[] argv) {
-		testCombat test = new testCombat();
-		
-	}
-	*/
 }
