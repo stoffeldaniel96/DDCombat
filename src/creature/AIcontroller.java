@@ -1,6 +1,8 @@
 package creature;
 
 import java.util.*;
+
+import DDCombat.CreatureInfo;
 /*
  * Name: AIcontroller.java
  * Description:
@@ -114,8 +116,12 @@ public class AIcontroller {
 	
 	//Name: turnActions
 	//inputs: creature host - the creature doing the action
+<<<<<<< HEAD
 	/*
 	public void turnActions( host)
+=======
+	public void turnActions(creature host, creature target, CreatureInfo hostInfo, CreatureInfo targetInfo)
+>>>>>>> branch 'master' of https://github.com/stoffeldaniel96/DDCombat.git
 	{
 		switch(state) {
 		
@@ -130,7 +136,11 @@ public class AIcontroller {
 				//wander;		//not yet coded
 		
 			//spot check
+<<<<<<< HEAD
 			//spotted = spotCheck;
+=======
+			//spotted = spotCheck();
+>>>>>>> branch 'master' of https://github.com/stoffeldaniel96/DDCombat.git
 		
 			//update character's state
 			updateState(host.getHitPoints(), false, false);
@@ -138,16 +148,99 @@ public class AIcontroller {
 		//alert
 		case 1:
 			//engage
+<<<<<<< HEAD
 			//pick a random enemy
+=======
+			/*pick a random enemy*/
+			//if not near enemy, charge
+			if(!characterNear(hostInfo, targetInfo))
+			{
+				charge();
+			}
+			else
+			{
+				strike();
+			}
+>>>>>>> branch 'master' of https://github.com/stoffeldaniel96/DDCombat.git
 			
-			
+			//if character hp is below a certain threshold maybe heal
 			
 		//scared
 		case 2:
-		
+			flee();
+			//possibly heal
 		//panic
 		case 3:
+			rout();
+			//possibly heal
 		}
 	}
+<<<<<<< HEAD
 	*/
+=======
+	
+	
+	//strike
+	//attacks target character
+	public void strike()
+	{
+		//roll attack roll
+		//check target AC
+		//if hits, calculate and deal damage
+		//else, do nothing
+	}
+	
+	//charge
+	//chases a target creature
+	public void charge()
+	{
+		//try to move next to target
+		//if not possible, try to move as close as possible
+	}
+	
+	public void flee()
+	{
+		//get distance from target
+	}
+	
+	public void rout()
+	{
+		//get off the map
+	}
+	
+	//characterNear
+	//returns true if target character is within striking distance of host character
+	public boolean characterNear(CreatureInfo host, CreatureInfo target)
+	{
+		//if host is here
+		//X-possible position T-target's position O-nothing
+		//
+		//XOO
+		//XTO
+		//XOO
+		if(host.getLocx() == target.getLocx()-1 && (host.getLocy() == target.getLocy()-1 || host.getLocy() == target.getLocy() ||host.getLocy() == target.getLocy()+1))
+		{
+			return true;
+		}
+		//host is in this position
+		//OXO
+		//OTO
+		//OXO
+		else if(host.getLocx() == target.getLocx() &&(host.getLocy() == target.getLocy()-1 || host.getLocy() == target.getLocy()+1))
+		{
+			return true;
+		}
+		//host is in this position
+		//OOX
+		//OTX
+		//OOX
+		else if(host.getLocx() == target.getLocx()+1 && (host.getLocy() == target.getLocy()-1 || host.getLocy() == target.getLocy() ||host.getLocy() == target.getLocy()+1))
+		{
+			return true;
+		}
+		
+		//in this case, host character is not in striking position of target character
+		return false;
+	}
+>>>>>>> branch 'master' of https://github.com/stoffeldaniel96/DDCombat.git
 }
