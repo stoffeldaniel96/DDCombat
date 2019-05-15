@@ -12,6 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,9 +32,11 @@ public class testCombat extends JPanel {
 	/**
 	 * 
 	 */
+	private static String testMap = "src/DDCombat/testMap.txt";
 	private static final long serialVersionUID = 1L;
 	/** The map on which the units will move */
-	private static gridMap map = new gridMap();
+	private static gridMap map = new gridMap(testMap);
+	
 	/** The path finder we'll use to search our map */
 	private PathFinder finder;
 	/** The last path found for the current unit */
@@ -59,9 +62,6 @@ public class testCombat extends JPanel {
 	 * Create a new test game for the path finding tutorial
 	 */
 	public testCombat() {
-		//super("D&D Combat Program - Map: " + map.getName());
-		//CreatureInfo window = new CreatureInfo();
-		//window.frame.setVisible(true);
 		try {
 			tiles[gridMap.GRASS] = ImageIO.read(getResource("res/grass.png"));
 			tiles[gridMap.TREES] = ImageIO.read(getResource("res/trees.png"));

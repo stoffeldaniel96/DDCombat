@@ -77,7 +77,7 @@ public class mainWindow {
 			public void actionPerformed(ActionEvent e) {
 				cards.show(MAIN_WINDOW, "name_6906489067600");
 				frame.setSize(800,800);
-				//frame.setBounds(100, 100, 800, 800);
+				frame.setLocationRelativeTo(null);
 			}
 		});
 		btnMapEditor.setBounds(10, 82, 123, 23);
@@ -89,11 +89,14 @@ public class mainWindow {
 		ImageIcon logo = new ImageIcon("res/CCEM.png");
 		lblLogo.setIcon(logo);
 		
+		
 		JButton btnTestEncounter = new JButton("Test Encounter");
 		btnTestEncounter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cards.show(MAIN_WINDOW, "name_1251653242400");
-				frame.setBounds(100, 100, 800, 800);
+				frame.setBounds(0, 0, 1000, 800);
+				frame.setLocationRelativeTo(null);
+				
 			}
 		});
 		btnTestEncounter.setBounds(10, 48, 123, 23);
@@ -121,6 +124,17 @@ public class mainWindow {
 		testCombat testC = new testCombat();
 		testC.setPreferredSize(new Dimension(960,960));
 		scrollPaneMW.setViewportView(testC);
+		JButton btnQEGoBack = new JButton("Back to Main Menu");
+		btnQEGoBack.setBounds(10, 740, 150, 20);
+		quickCombat.add(btnQEGoBack);
+		btnQEGoBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(MAIN_WINDOW, "name_6893870138000");
+				frame.setSize(450,300);
+			}
+		});
+		CreatureInfo aCreature = new CreatureInfo();
+		quickCombat.add(aCreature);
 		
 		JPanel editorWindow = new JPanel();
 		MAIN_WINDOW.add(editorWindow, "name_6906489067600");
@@ -150,27 +164,51 @@ public class mainWindow {
 		scrollPane.add(editor);
 		scrollPane.setViewportView(editor);
 		
-		JFileChooser fileChooser = new JFileChooser();
+		JFileChooser fileSave = new JFileChooser();
+		JFileChooser fileLoad = new JFileChooser();
+		
 		JButton btnSave = new JButton("Save Map");
+		JButton btnLoad = new JButton("Load Map");
+		JLabel mapName = new JLabel ("Untitled Map");
+	
+		btnLoad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				fileLoad.setBounds(0, 0, 582, 397);
+				editorWindow.add(fileLoad);
+				fileLoad.setDialogTitle("Load Map");
+				int returnValue = fileLoad.showDialog(null, "Load");
+				if (returnValue == JFileChooser.APPROVE_OPTION) {
+					editor.loadFMap(fileLoad.getSelectedFile().getPath());
+					System.out.println(fileLoad.getSelectedFile().getPath());
+					mapName.setText(fileLoad.getSelectedFile().getName());
+				}
+			}
+		});
+		
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				fileChooser.setBounds(0, 0, 582, 397);
-				editorWindow.add(fileChooser);
-				fileChooser.setDialogTitle("Save Map");
-				int returnValue = fileChooser.showDialog(null, "Save");
+				fileSave.setBounds(0, 0, 582, 397);
+				editorWindow.add(fileSave);
+				fileSave.setDialogTitle("Save Map");
+				int returnValue = fileSave.showDialog(null, "Save");
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					try {
-						editor.saveMap((fileChooser.getSelectedFile().getPath()));
+						editor.saveMap((fileSave.getSelectedFile().getPath()));
+						mapName.setText(fileSave.getSelectedFile().getName());
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}	
 			}
 		});
+		
+		btnLoad.setBounds(200, 740, 100, 20);
 		btnSave.setBounds(300, 740, 100, 20);
+		mapName.setBounds(200, 720, 100, 20);
+		editorWindow.add(btnLoad);
 		editorWindow.add(btnSave);
+		editorWindow.add(mapName);
 		
 		
 	}

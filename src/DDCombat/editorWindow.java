@@ -11,14 +11,18 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -61,9 +65,10 @@ public class editorWindow extends JPanel {
 				 double dy = (e.getY() - oy)/64;
 				 dy= dy + 1;
 				 System.out.println(ox/64 + " " + oy/64 + " " + dx + " " + dy);
+				 
 				 if (e.getButton() == 1)
-					 map.fillArea(ox/64, oy/64, (int)dx, (int)dy, map.TREES);
-				 else 
+					 map.fillArea(ox/64, oy/64, (int)Math.ceil(dx), (int)Math.ceil(dy), map.TREES);
+				 else if (e.getButton() == 3)
 					 map.fillArea(ox/64, oy/64, (int)dx, (int)dy, map.GRASS);
 				 repaint(0);
 				}
@@ -114,15 +119,6 @@ public class editorWindow extends JPanel {
 		x /= 64;
 		y /= 64;
 			
-		if (map.getTerrain(x, y) != map.TREES) {
-				map.fillArea(x,y,1,1,map.TREES);
-		}
-		
-		/*
-		if (map.getTerrain(x, y) == map.TREES) {
-			map.fillArea(x,y,1,1,map.GRASS);
-		}
-		*/
 		repaint(0);
 	}
 	
@@ -162,21 +158,26 @@ public class editorWindow extends JPanel {
 	public int getMapWidth() {
 		return map.WIDTH;
 	}
-	
-	public void saveMap(String string) throws IOException{
+	public void saveMap(String savePath) throws IOException{
 		StringBuilder builder = new StringBuilder();
 		for (int x=0;x<map.getWidthInTiles();x++) {
 			for (int y=0;y<map.getHeightInTiles();y++) {
 				builder.append(map.getTerrain()[x][y]+"");//append to the output string
 			      if(y<map.getHeightInTiles() - 1)//if this is not the last row element
-			         builder.append(",");//the
+			         builder.append(" ");//the
 			}
 			builder.append("\n");//append new line at the end of the row
 		}
-		BufferedWriter writer = new BufferedWriter(new FileWriter(string));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(savePath));
 		writer.write(builder.toString());//save the string representation of the board
 		writer.close();
 		
+	}
+	public void loadFMap(String filePath)
+	{
+		map.loadMap(filePath);
+		System.out.println("loaded Map");
+		repaint();
 	}
 
 }

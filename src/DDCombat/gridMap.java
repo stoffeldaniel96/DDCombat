@@ -2,6 +2,16 @@ package DDCombat;
 
 import pathfinding.Mover;
 import pathfinding.TileBasedMap;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.Scanner;
+
 import creature.*;
 
 public class gridMap implements TileBasedMap {
@@ -41,7 +51,7 @@ public class gridMap implements TileBasedMap {
 	public gridMap() {
 		// create some test data
 
-		//fillArea(10,5,3,3,TREES);
+		/*
 		fillArea(0,2,1,1,TREES);
 		fillArea(5,3,1,1,TREES);
 		fillArea(10,8,1,1,TREES);
@@ -64,14 +74,39 @@ public class gridMap implements TileBasedMap {
 		units[13][13] = GOBLIN;
 		units[12][13] = GOBLIN;
 		units[13][12] = GOBLIN;
-		/*
-		units[15][15] = TANK;
-		units[16][16] = TANK;
-		units[2][7] = BOAT;
-		units[20][25] = PLANE;
 		*/
 	}
-
+	
+	public gridMap(String filePath) {
+		// create some test data
+		loadMap(filePath);
+		
+		
+	    /*
+		fillArea(0,2,1,1,TREES);
+		fillArea(5,3,1,1,TREES);
+		fillArea(10,8,1,1,TREES);
+		fillArea(1,2,1,1,TREES);
+		fillArea(8,9,1,1,TREES);
+		fillArea(5,4,1,1,TREES);
+		fillArea(3,6,1,1,TREES);
+		fillArea(7,7,1,1,TREES);
+		fillArea(1,4,1,1,TREES);
+		fillArea(1,6,1,1,TREES);
+		fillArea(3,7,1,1,TREES);
+		fillArea(1,13,1,1,TREES);
+		fillArea(1,11,1,1,TREES);
+		fillArea(3,12,1,1,TREES);
+		fillArea(13,1,1,1,TREES);
+		fillArea(11,1,1,1,TREES);
+		fillArea(12,3,1,1,TREES);
+		
+		units[1][1] = PLAYER;
+		units[13][13] = GOBLIN;
+		units[12][13] = GOBLIN;
+		units[13][12] = GOBLIN;
+		*/
+	}
 	/**
 	 * Fill an area with a given terrain type
 	 * 
@@ -212,6 +247,23 @@ public class gridMap implements TileBasedMap {
 
 	public void setTerrain(int[][] terrain) {
 		this.terrain = terrain;
+	}
+	
+	public void loadMap(String filePath)
+	{
+		try {
+			Scanner sc = new Scanner(new BufferedReader(new FileReader(filePath)));
+			 for (int i = 0; i < terrain.length && sc.hasNextLine(); i++) {
+                 for (int col = 0; col < terrain.length && sc.hasNextInt(); col++) {
+                	 terrain[i][col] = sc.nextInt() ;
+                  }
+                 sc.nextLine(); // col values populated for this row, time to go to the next line
+          }
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			System.out.println("No can do");
+		}
 	}
 	
 	
